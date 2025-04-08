@@ -7,7 +7,7 @@ using UnityEngine.Playables;
 public class Snake : MonoBehaviour
 {
     
-   //globals
+    //globals
     [Header("Snake Components")]
     public Transform head;              //head of snake to target movement
     public List<Transform> bodySegments; // list of body parts to target follow
