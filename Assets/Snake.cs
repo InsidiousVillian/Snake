@@ -24,6 +24,14 @@ public class Snake : MonoBehaviour
     [Header("Startup")]
     public Vector3 startPosition;
 
+
+    [Header("Single Mappings")]
+    public InputActionReference move;
+    public InputActionReference jump;
+    
+
+    
+
     // private
     private Rigidbody headRigidbody;
 
@@ -33,7 +41,6 @@ public class Snake : MonoBehaviour
     void Awake()
     {
         
-
         // Set up RB - note all of this can be done in editor
         headRigidbody = head.GetComponent<Rigidbody>();
         if (headRigidbody == null)
@@ -44,8 +51,23 @@ public class Snake : MonoBehaviour
         headRigidbody.freezeRotation = true;//no tilt
 
         startPosition = transform.position;
+
+
+        //on enable/disable
+        jump.action.performed += OnJump;
+        jump.action.performed += ctx => OnJump();
+
+        move.action.performed += ctx => moveInput.x = ctx.ReadValue<float>();
+
     }
 
+    private void OnJump(InputAction.CallbackContext context)
+    {
+        if (isGrounded)
+        {
+            headRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+    }
 
     void Start()
     {
@@ -58,12 +80,22 @@ public class Snake : MonoBehaviour
             bodySegments[i].position = position;
             bodySegments[i].rotation = head.rotation;
         }
+
+
     }
 
     void Update()
     {
+        Debug.Log(jump.action + "SNDIUJHASJDJS");
+        
+        Debug.Log(move.action.ReadValue<float>());
+
+        //manually read value, please dont do this 
+        moveInput.x = move.action.ReadValue<float>();
         //will explain this later
         isGrounded = Physics.Raycast(head.position, Vector3.down, 2.0f, groundLayer);
+
+
         
         //move forward
         Vector3 horizontalMovement = head.forward * speed * Time.deltaTime;
