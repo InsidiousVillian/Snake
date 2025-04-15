@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 public class Snake : MonoBehaviour
 {
-    
     //globals
     [Header("Snake Components")]
     public Transform head;              //head of snake to target movement
@@ -40,9 +39,10 @@ public class Snake : MonoBehaviour
     private Vector2 moveInput;
     void Awake()
     {
-        
-        // Set up RB - note all of this can be done in editor
-        headRigidbody = head.GetComponent<Rigidbody>();
+
+
+    // Set up RB - note all of this can be done in editor
+    headRigidbody = head.GetComponent<Rigidbody>();
         if (headRigidbody == null)
         {
             headRigidbody = head.gameObject.AddComponent<Rigidbody>();

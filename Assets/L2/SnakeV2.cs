@@ -4,9 +4,13 @@ using UnityEngine;
 
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
+
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 public class SnakeV2 : MonoBehaviour
 {
     
+
     //globals
     [Header("Snake Components")]
     public Transform head;              //head of snake to target movement
@@ -40,7 +44,10 @@ public class SnakeV2 : MonoBehaviour
     private Vector2 moveInput;
     void Awake()
     {
+        EventManager.Instance.FoodEaten.AddListener(AddBodyPart);
         
+
+
         // Set up RB - note all of this can be done in editor
         headRigidbody = head.GetComponent<Rigidbody>();
         if (headRigidbody == null)
@@ -113,14 +120,30 @@ public class SnakeV2 : MonoBehaviour
                 bodySegments[i].rotation = Quaternion.LookRotation(directionToTarget);
             }
         }
-    }
 
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.3712f);
+
+
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.gameObject.CompareTag("Food"))
+            {
+                EventManager.Instance.FoodEaten.Invoke();
+                Destroy(hitCollider.gameObject);
+            }
+        }
+    }
+    void AddBodyPart()
+    {
+        //ICE TASK
+    }
     void FixedUpdate()
     {
         // rotate head in fixed update if moveInput
         float horizontal = moveInput.x;
         head.Rotate(0, horizontal * turnSpeed * Time.deltaTime, 0);
     }
+
 
 
 }

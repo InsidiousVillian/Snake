@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public enum BirdStates
 {
@@ -13,6 +15,7 @@ public class Birdie : MonoBehaviour
     float turningSpeed = 50.0f;
     [SerializeField]
     float birdSpeed = 10.0f;
+
 
 
 
@@ -70,7 +73,7 @@ public class Birdie : MonoBehaviour
                 //if the bird has moved close enough to a waypoint
                 float distance = Vector3.Distance(transform.position, currentTarget);
 
-                if (distance < 3)
+                if (distance < Closeness)
                 {
                     //waypoint
                     currentTarget = waypoints[Random.Range(0, waypoints.Length)].transform.position;
