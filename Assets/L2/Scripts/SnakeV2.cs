@@ -45,6 +45,12 @@ public class SnakeV2 : MonoBehaviour
     void Awake()
     {
 
+        move.action.Enable();
+        jump.action.Enable();
+        Debug.Log("MOVE ENABLED? " + move.action.enabled);
+
+
+
         //cals addbodypart method if food and player collide
         EventManager.Instance.FoodEaten.AddListener(AddBodyPart);
         
@@ -96,6 +102,10 @@ public class SnakeV2 : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("Update is running");
+        Debug.Log("Move Value: " + move.action.ReadValue<float>());
+
+        
         Debug.Log(jump.action + "SNDIUJHASJDJS");
         
         Debug.Log(move.action.ReadValue<float>());
@@ -169,8 +179,10 @@ public class SnakeV2 : MonoBehaviour
     }
     void FixedUpdate()
     {
+
         // rotate head in fixed update if moveInput
         float horizontal = moveInput.x;
+        Debug.Log("Rotating with input: " + horizontal);
         head.Rotate(0, horizontal * turnSpeed * Time.deltaTime, 0);
     }
 
