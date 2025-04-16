@@ -127,6 +127,7 @@ public class SnakeV2 : MonoBehaviour
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.3712f);
 
+        Debug.Log("Checking for nearby objects... Found: " + hitColliders.Length);
 
         foreach (var hitCollider in hitColliders)
         {
@@ -134,6 +135,9 @@ public class SnakeV2 : MonoBehaviour
             {
                 EventManager.Instance.FoodEaten.Invoke(); //triggers addbodypart
                 Destroy(hitCollider.gameObject); //destorys food
+            }
+            else{
+                Debug.Log("HIT SOMETHING ELSE" +hitCollider.gameObject.tag);
             }
         }
     }

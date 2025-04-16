@@ -1110,7 +1110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FoodPrefab: {fileID: 3278137407082495252, guid: 323cfe6329c3dd5418f60b8dd4a6dc05, type: 3}
   spawnArea: {fileID: 852739804}
-  spawnTimer: 2
+  spawnTimer: 1
 --- !u!65 &852739804
 BoxCollider:
   m_ObjectHideFlags: 0
