@@ -44,6 +44,8 @@ public class SnakeV2 : MonoBehaviour
     private Vector2 moveInput;
     void Awake()
     {
+
+        //cals addbodypart method if food and player collide
         EventManager.Instance.FoodEaten.AddListener(AddBodyPart);
         
 
@@ -54,9 +56,11 @@ public class SnakeV2 : MonoBehaviour
         {
             headRigidbody = head.gameObject.AddComponent<Rigidbody>();
         }
+        //gravity is applied
         headRigidbody.useGravity = true;
         headRigidbody.freezeRotation = true;//no tilt
 
+        //will be used for respawn later, basically just storing spawn position
         startPosition = transform.position;
 
 
@@ -126,16 +130,38 @@ public class SnakeV2 : MonoBehaviour
 
         foreach (var hitCollider in hitColliders)
         {
-            if (hitCollider.gameObject.CompareTag("Food"))
+            if (hitCollider.gameObject.CompareTag("Food")) 
             {
-                EventManager.Instance.FoodEaten.Invoke();
-                Destroy(hitCollider.gameObject);
+                EventManager.Instance.FoodEaten.Invoke(); //triggers addbodypart
+                Destroy(hitCollider.gameObject); //destorys food
             }
         }
     }
     void AddBodyPart()
     {
         //ICE TASK
+
+        // Get the last segment to base the new one on
+    Transform lastSegment = bodySegments.Count > 0 ? bodySegments[bodySegments.Count - 1] : head;
+
+    // Calculate spawn position behind the last segment
+    Vector3 newPosition = lastSegment.position - lastSegment.forward * segmentDistance;
+    Quaternion newRotation = lastSegment.rotation;
+
+    // Instantiate a new segment (you’ll need a prefab for this!)
+    GameObject newSegment = GameObject.CreatePrimitive(PrimitiveType.Capsule); // TEMPORARY, use a prefab later!
+    newSegment.transform.position = newPosition;
+    newSegment.transform.rotation = newRotation;
+
+    // Optionally tag or style it
+    newSegment.name = "BodySegment_" + bodySegments.Count;
+    newSegment.tag = "SnakeBody";
+    newSegment.transform.localScale = Vector3.one * 0.8f;
+
+    // Add it to the list
+    bodySegments.Add(newSegment.transform);
+
+        
     }
     void FixedUpdate()
     {
